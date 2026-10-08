@@ -37,7 +37,11 @@ const analyticsData = [
    * @returns {string} "Good" or "Low"
    */
   const getEngagementLevel = (user) => {
-    return user.avgSessionDuration >= 200 ? "Good" : "Low";
+    if (user.avgSessionDuration >= 200) {
+      return "Good";
+    } else {
+      return "Low";
+    }
   };
   
   /**
@@ -47,12 +51,16 @@ const analyticsData = [
    * @returns {string} Name of user with longest session
    */
   const findLongestSessionUser = (data) => {
-    let maxDuration = -Infinity;
-    let longestUser = "";
+    if (data.length === 0) {
+      return "";
+    }
 
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].avgSessionDuration > maxDuration) {
-        maxDuration = data[i].avgSessionDuration;
+    let longestUser = data[0].name;
+    let longestDuration = data[0].avgSessionDuration;
+
+    for (let i = 1; i < data.length; i++) {
+      if (data[i].avgSessionDuration > longestDuration) {
+        longestDuration = data[i].avgSessionDuration;
         longestUser = data[i].name;
       }
     }
@@ -79,8 +87,7 @@ const analyticsData = [
    * @returns {Array} Array of active user names
    */
   const getActiveUsers = (data) => {
-    return data.filter(user => user.totalSessions >= 5)
-               .map(user => user.name);
+    return data.filter(user => user.totalSessions >= 5).map(user => user.name);
   };
   
   /**
